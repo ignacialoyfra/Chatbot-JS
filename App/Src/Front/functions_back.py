@@ -95,15 +95,15 @@ def function_main_documents(question:str, data:pd.DataFrame, documents:list):
     data_documents = data_main(data,question)
     pages = get_pages(data_documents, "metadata")
     docs_ = documents_prompt(documents, pages)
-    return docs_
+    return docs_, pages
 
 
 def function_main_app(p:str, data:pd.DataFrame, documents:list):
-    docs_ = function_main_documents(p, data, documents)
+    docs_, pages = function_main_documents(p, data, documents)
     # Definición del prompt
     template = """
-        Eres Ali, un asistente virtual de personalidad extremadamente amable, tu porposito es ayudar con preguntas de JavaScript
-        y manejas la siguiente información: {context} para contestar la
+        Eres Ali, un asistente virtual de personalidad extremadamente amable,tu proposito es ayudar con preguntas de JavaScript
+        y debes responder solamente en base a la siguiente información: {context} para contestar la
         siguiente pregunta:{human_input} y tienes el siguiente contexto de la conversación {chat_history}.
         Responde solo en español destacando tu personalidad y utilizando solo la información que recibes.
         Contesta de forma detallada.
@@ -118,4 +118,4 @@ def function_main_app(p:str, data:pd.DataFrame, documents:list):
                         
     response = chain({"input_documents": docs_,
                         "human_input": p}, return_only_outputs=True)
-    return response["output_text"]
+    return response["output_text"], pages

@@ -35,12 +35,13 @@ if prompt := st.chat_input("Ingresa tu pregunta: "): #Propmt es el mensaje del u
         message_placeholder = st.empty()
         full_response = ""
         
-        assistant_response = function_main_app(prompt, data, documents)
+        assistant_response, pages = function_main_app(prompt, data, documents)
         # Simulate stream of response with milliseconds delay
         for chunk in assistant_response.split():
             full_response += chunk + " "
             time.sleep(0.05)
             # Add a blinking cursor to simulate typing
             message_placeholder.markdown(full_response + "▌")
+        st.text(pages)
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": full_response})
