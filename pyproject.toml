@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["ignacialoyfra <maria.loyolaf@utem.cl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.3"
+pandas = "^2.1.3"
+pypdf = "^3.17.1"
+openai = "0.28"
+langchain = "^0.0.345"
+ipykernel = "^6.27.1"
+torch = "^2.1.1"
+transformers = "^4.35.2"
+tiktoken = "^0.5.1"
+python-dotenv = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
