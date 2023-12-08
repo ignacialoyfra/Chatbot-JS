@@ -17,6 +17,7 @@ warnings.filterwarnings("ignore")
 load_dotenv() 
 api_key = os.getenv('OPENAI_API_KEY')
 chat = OpenAI(temperature=0.4, model_name='gpt-3.5-turbo-16k', api_key=api_key)
+memory = ConversationBufferMemory(memory_key="chat_history", input_key="human_input")
 
 def create_embeddings(texts):
     model_name = 'bert-base-multilingual-cased'
@@ -98,7 +99,7 @@ def function_main_documents(question:str, data:pd.DataFrame, documents:list):
     return docs_, pages
 
 
-def function_main_app(p:str, data:pd.DataFrame, documents:list):
+def function_main_app(p:str, data:pd.DataFrame, documents:list, memory=memory):
     docs_, pages = function_main_documents(p, data, documents)
     # Definición del prompt
     template = """
@@ -111,8 +112,7 @@ def function_main_app(p:str, data:pd.DataFrame, documents:list):
     prompt = PromptTemplate(
             input_variables=["chat_history", "human_input", "context"], template=template
             )
-    memory = ConversationBufferMemory(memory_key="chat_history", input_key="human_input")
-                        # Se crea la cadena
+    
     chain = load_qa_chain(
     chat, chain_type="stuff", memory=memory, prompt=prompt)
                         
